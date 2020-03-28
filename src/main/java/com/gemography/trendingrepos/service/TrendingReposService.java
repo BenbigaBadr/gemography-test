@@ -41,8 +41,7 @@ public class TrendingReposService {
     public List<Item> getRepos(String language) {
         assert language != null : "The language shouldn't be null";
         List<ItemEntity> itemEntities = itemRepository.findByLanguage(language);
-        List<Item> result=  itemMapper.sourceToDestination(itemEntities);
-        return result;
+        return itemMapper.sourceToDestination(itemEntities);
     }
 
 
