@@ -36,13 +36,13 @@ public class TrendingReposService {
     @Autowired
     private ItemRepository itemRepository;
 
-    @Autowired
-    private ItemMapper itemMapper;
+    private ItemMapper itemMapper = ItemMapper.INSTANCE;
 
     public List<Item> getRepos(String language) {
         assert language != null : "The language shouldn't be null";
         List<ItemEntity> itemEntities = itemRepository.findByLanguage(language);
-        return itemMapper.sourceToDestination(itemEntities);
+        List<Item> result=  itemMapper.sourceToDestination(itemEntities);
+        return result;
     }
 
 

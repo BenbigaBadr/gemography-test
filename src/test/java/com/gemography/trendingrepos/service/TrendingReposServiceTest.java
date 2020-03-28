@@ -1,16 +1,20 @@
 package com.gemography.trendingrepos.service;
 
+import com.gemography.trendingrepos.Mapper.ItemMapper;
+import com.gemography.trendingrepos.Mapper.ItemMapperImpl;
 import com.gemography.trendingrepos.entity.ItemEntity;
 import com.gemography.trendingrepos.entity.OwnerEntity;
 import com.gemography.trendingrepos.models.Item;
 import com.gemography.trendingrepos.repository.ItemRepository;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +31,7 @@ public class TrendingReposServiceTest {
 
     @Mock
     private ItemRepository itemRepository;
+
 
     ItemEntity itemEntity, itemEntity1, itemEntity3;
 
@@ -73,7 +78,6 @@ public class TrendingReposServiceTest {
     @Test
     public void testGetLanguageRepos()
     {
-
         when(itemRepository.getAllLanguages()).thenReturn(Arrays.asList("java","C++"));
         when(itemRepository.countByLanguage("java")).thenReturn(2l);
         when(itemRepository.countByLanguage("C++")).thenReturn(1l);
@@ -83,7 +87,7 @@ public class TrendingReposServiceTest {
         Map<String, List<Item>> itemsPerLangage = trendingReposService.getLanguageRepos();
         Assert.assertEquals(2, itemsPerLangage.get("java").size());
         Assert.assertEquals(1, itemsPerLangage.get("C++").size());
-        Assert.assertEquals("name_1",((Item)itemsPerLangage.get("C++").get(0)).getName());
+        Assert.assertEquals("name 1",((Item)itemsPerLangage.get("C++").get(0)).getName());
         Assert.assertEquals("htmlUrl_1",((Item)itemsPerLangage.get("C++").get(0)).getHtml_url());
     }
 
@@ -98,6 +102,6 @@ public class TrendingReposServiceTest {
 
         Map<String, Long> itemsPerLangage = trendingReposService.getLanguagesCount();
         Assert.assertEquals(Long.valueOf(2l),(Long) itemsPerLangage.get("java"));
-        Assert.assertEquals(Long.valueOf(1l), itemsPerLangage.get("C++"));
+        Assert.assertEquals(Long.valueOf(1l), (Long) itemsPerLangage.get("C++"));
     }
 }
