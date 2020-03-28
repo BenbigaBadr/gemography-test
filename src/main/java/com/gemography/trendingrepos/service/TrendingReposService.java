@@ -40,14 +40,14 @@ public class TrendingReposService {
     private ItemMapper itemMapper;
 
     public List<Item> getRepos(String language) {
-        assert language == null : "The language shouldn't be null";
+        assert language != null : "The language shouldn't be null";
         List<ItemEntity> itemEntities = itemRepository.findByLanguage(language);
         return itemMapper.sourceToDestination(itemEntities);
     }
 
 
     public Long count(String language) {
-        assert language == null : "The language shouldn't be null";
+        assert language != null : "The language shouldn't be null";
         return itemRepository.countByLanguage(language);
     }
 
@@ -93,7 +93,6 @@ public class TrendingReposService {
     {
         Map<String,List<Item>> itemsPerLangage = new HashMap<>();
         List<String> languages = getAllLanguages();
-        Map<Integer,List<Item>> itemAndCount = new HashMap<>();
         logger.info("--- DEBUT : build of the repos list and count Per Lanuage -----");
         languages.stream().filter(language -> language != null).forEach(language -> {
             itemsPerLangage.put(language, getRepos(language));

@@ -10,7 +10,7 @@ public class ItemEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private String id;
+    private Long id;
     private String name;
     private String html_url;
     private String language;
@@ -18,11 +18,11 @@ public class ItemEntity implements Serializable {
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private OwnerEntity owner;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
