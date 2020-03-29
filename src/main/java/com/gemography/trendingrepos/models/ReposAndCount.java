@@ -3,11 +3,14 @@ package com.gemography.trendingrepos.models;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * classe utilitaire pour regrouper les conteurs des répértoires ainsi que ces dernieurs dans un seul objet
+ */
 public class ReposAndCount implements Serializable {
 
-    private List<Item> repos;
-
     private Integer count;
+
+    private List<Item> repos;
 
     public ReposAndCount(List<Item> repos)
     {

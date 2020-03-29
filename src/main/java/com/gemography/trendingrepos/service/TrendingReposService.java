@@ -20,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,11 @@ public class TrendingReposService {
 
     private ItemMapper itemMapper = ItemMapper.INSTANCE;
 
+    /**
+     * récuppérer la liste des items à retourner dans l'API
+     * @param language
+     * @return
+     */
     public List<Item> getRepos(String language) {
         assert language != null : "The language shouldn't be null";
         List<ItemEntity> itemEntities = itemRepository.findByLanguage(language);
@@ -45,16 +51,30 @@ public class TrendingReposService {
     }
 
 
+    /**
+     * récuppération du nombre de répértoires par language
+     * @param language
+     * @return
+     */
     public Long count(String language) {
         assert language != null : "The language shouldn't be null";
         return itemRepository.countByLanguage(language);
     }
 
+    /**
+     * récuppération de la liste des languages
+     * @return
+     */
     @Cacheable("languages")
     public List<String> getAllLanguages() {
         return itemRepository.getAllLanguages();
     }
 
+    /**
+     * création des items dans la base de données
+     * @param items
+     * @return
+     */
     @Transactional
     @Caching(evict = {
             @CacheEvict(value = "languages", allEntries = true)})
@@ -66,6 +86,10 @@ public class TrendingReposService {
         return itemMapper.sourceToDestination(entities);
     }
 
+    /**
+     * regroupers les conteurs des répértoires par languages
+     * @return
+     */
     public Map<String, Long> getLanguagesCount() {
         Map<String, Long> itemCountPerLangage = new HashMap<>();
         List<String> languages = getAllLanguages();
@@ -78,6 +102,12 @@ public class TrendingReposService {
         return itemCountPerLangage;
     }
 
+    /**
+     * initialiser les items et les persister dans la base de données
+     * @param creationDate
+     * @return
+     * @throws Exception
+     */
     public List<Item> initItems(@RequestParam("date") String creationDate) throws Exception {
         DateUtil.parse(creationDate);
         RestTemplate restTemplate = new RestTemplate();
@@ -88,6 +118,10 @@ public class TrendingReposService {
             return null;
     }
 
+    /**
+     * regrouper les répertoires par languages
+     * @return
+     */
     public Map<String, List<Item>> getLanguageRepos()
     {
         Map<String,List<Item>> itemsPerLangage = new HashMap<>();
@@ -100,6 +134,10 @@ public class TrendingReposService {
         return itemsPerLangage;
     }
 
+    /**
+     * regrouper les répértoires ainsi ques ses conteurs par languages
+     * @return
+     */
     public Map<String, ReposAndCount> getReposAndTheirCountsPerLanguage()
     {
         Map<String, ReposAndCount> reposAndCountsPerLangage = new HashMap<>();
